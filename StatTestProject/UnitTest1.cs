@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Stat;
+using Stat.Places;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
@@ -27,8 +28,26 @@ namespace StatTestProject
                     //Trace.WriteLine(city.GetFullname());
                     var tryCity = (City)city;
                     await tryCity.GetMembersAsync();
-                    var tryFullname = tryCity.GetFullname();
-                    Trace.WriteLine(tryFullname);
+                    //var tryFullname = tryCity.GetFullname();
+                    //Trace.WriteLine(tryFullname);
+                    foreach (var county in tryCity.Members)
+                    {
+                        var tryCounty = county as County;
+                        await tryCounty.GetMembersAsync();
+                        foreach (var town in county.Members)
+                        {
+                            var tryTown = town as Town;
+                            await tryTown.GetMembersAsync();
+                            foreach (var village in tryTown.Members)
+                            {
+                                var tryVillage = village as Village;
+                                var tryFullname = tryVillage.GetFullname();
+                                Trace.WriteLine(tryFullname);
+                            }
+                            //Trace.WriteLine(tryTown.GetFullname());
+                        }
+                        //Trace.WriteLine(tryCounty.GetFullname());
+                    }
                     //Trace.WriteLine(tryCity.GetFullname());
                 }
             }
@@ -43,8 +62,6 @@ namespace StatTestProject
                 Url = "http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2017/13.html"
             };
             await hebei.GetMembersAsync();
-            
-
         }
 
         [TestMethod]
