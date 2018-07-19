@@ -41,7 +41,7 @@ namespace Stat.Places
                         town.Code = townElement.FirstChild.InnerText;
                         town.Name = townElement.ChildNodes[1].InnerText;
                     }
-                    town.Father = this;
+                    //town.Father = this;
                     AddMember(town);
                     //Members.Add(town);
                 }

@@ -23,7 +23,7 @@ namespace Stat.Places
             {
                 var city = new City();
                 city.Code = Code = cityElement.FirstChild.FirstChild.InnerText;
-                city.Father = this;
+                //city.Father = this;
                 if (cityElement.FirstChild.FirstChild.HasAttribute("href"))
                 {
                     var split = Url.Split('/');

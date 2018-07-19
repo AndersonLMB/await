@@ -13,6 +13,8 @@ namespace StatConsole
         static void Main(string[] args)
         {
             var delay = int.Parse(ConfigurationManager.AppSettings["GetPageDelay"]);
+            var pgCon = ConfigurationManager.ConnectionStrings["PgCon"].ConnectionString;
+            PlacesConfig.SetPgConnection(pgCon);
             Stat.Program.RunAsync(delay);
             //RunAsync();
             Console.ReadLine();

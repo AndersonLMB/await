@@ -28,7 +28,7 @@ namespace Stat.Places
                     village.Code = villageElement.ChildNodes[0].InnerText;
                     village.CxType = villageElement.ChildNodes[1].InnerText;
                     village.Name = villageElement.ChildNodes[2].InnerText;
-                    village.Father = this;
+                    //village.Father = this;
                     //Members.Add(village);
                     AddMember(village);
                 }

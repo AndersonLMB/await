@@ -35,9 +35,10 @@ namespace Stat.Places
                     {
                         Name = aa.InnerText,
                         Url = newurl,
-                        Father = this,
+                        //Father = this,
                         Code = String.Format("{0:D2}0000000000", aa.GetAttribute("href").Split('.')[0])
                     };
+
                     AddMember(newProvince);
                     //Members.Add(newProvince);
                 }

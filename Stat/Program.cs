@@ -2,6 +2,8 @@
 using System.Threading;
 using System.Diagnostics;
 using Stat.Places;
+using Npgsql;
+using Dapper;
 
 namespace Stat
 {
@@ -19,10 +21,17 @@ namespace Stat
         {
 
             Stat.Places.PlacesConfig.Delay = delay;
-            var china = new Nation();
 
-            china.Url = "http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2017/";
-            china.Name = "中华人民共和国";
+            var sql = String.Format("SELECT \"NAME\",\"URL\",\"CODE\",\"PLACETYPE\" FROM public.stat WHERE \"NAME\"='{0}'", "中华人民共和国");
+            //command.Connection = PgConnection;
+            var china = PlacesConfig.PgConnection.QueryFirstOrDefault<Nation>(sql, new Nation()
+            {
+            });
+
+            //var china = new Nation();
+            //china.Url = "http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2017/";
+            //china.Name = "中华人民共和国";
+
             await china.GetMembersAsync();
             foreach (var province in china.Members)
             {

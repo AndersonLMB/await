@@ -40,7 +40,7 @@ namespace Stat.Places
                     county.Code = countyElement.FirstChild.InnerText;
                     county.Name = countyElement.ChildNodes[1].InnerText;
                 }
-                county.Father = this;
+                //county.Father = this;
                 AddMember(county);
                 //this.Members.Add(county);
             }
