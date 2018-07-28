@@ -63,46 +63,47 @@ namespace Stat
             //china.Name = "中华人民共和国";
 
             //await china.GetMembersAsync();
+            china.MembersAutoGetMembers = true;
             await china.GetMembersAsync();
-            foreach (var province in china.Members)
-            {
-                //Trace.WriteLine(province.Name);   
-                //break;
-                var tryProvince = (Province)province;
-                tryProvince.AutoStoreMembersToDB = true;
-                await tryProvince.GetMembersAsync();
-                foreach (var city in province.Members)
-                {
-                    //Trace.WriteLine(city.GetFullname());
-                    var tryCity = (City)city;
-                    tryCity.AutoStoreMembersToDB = true;
-                    await tryCity.GetMembersAsync();
-                    //var tryFullname = tryCity.GetFullname();
-                    //Trace.WriteLine(tryFullname);
-                    foreach (var county in tryCity.Members)
-                    {
-                        var tryCounty = county as County;
-                        tryCounty.AutoStoreMembersToDB = true;
-                        await tryCounty.GetMembersAsync();
-                        foreach (var town in county.Members)
-                        {
-                            var tryTown = town as Town;
-                            tryTown.AutoStoreMembersToDB = true;
-                            await tryTown.GetMembersAsync();
-                            foreach (var village in tryTown.Members)
-                            {
-                                var tryVillage = village as Village;
-                                var tryFullname = tryVillage.GetFullname();
-                                //Trace.WriteLine(tryFullname);
-                                Console.WriteLine(tryFullname);
-                            }
-                            //Trace.WriteLine(tryTown.GetFullname());
-                        }
-                        //Trace.WriteLine(tryCounty.GetFullname());
-                    }
-                    //Trace.WriteLine(tryCity.GetFullname());
-                }
-            }
+            //foreach (var province in china.Members)
+            //{
+            //    //Trace.WriteLine(province.Name);   
+            //    //break;
+            //    var tryProvince = (Province)province;
+            //    tryProvince.AutoStoreMembersToDB = true;
+            //    await tryProvince.GetMembersAsync();
+            //    foreach (var city in province.Members)
+            //    {
+            //        //Trace.WriteLine(city.GetFullname());
+            //        var tryCity = (City)city;
+            //        tryCity.AutoStoreMembersToDB = true;
+            //        await tryCity.GetMembersAsync();
+            //        //var tryFullname = tryCity.GetFullname();
+            //        //Trace.WriteLine(tryFullname);
+            //        foreach (var county in tryCity.Members)
+            //        {
+            //            var tryCounty = county as County;
+            //            tryCounty.AutoStoreMembersToDB = true;
+            //            await tryCounty.GetMembersAsync();
+            //            foreach (var town in county.Members)
+            //            {
+            //                var tryTown = town as Town;
+            //                tryTown.AutoStoreMembersToDB = true;
+            //                await tryTown.GetMembersAsync();
+            //                foreach (var village in tryTown.Members)
+            //                {
+            //                    var tryVillage = village as Village;
+            //                    var tryFullname = tryVillage.GetFullname();
+            //                    //Trace.WriteLine(tryFullname);
+            //                    Console.WriteLine(tryFullname);
+            //                }
+            //                //Trace.WriteLine(tryTown.GetFullname());
+            //            }
+            //            //Trace.WriteLine(tryCounty.GetFullname());
+            //        }
+            //        //Trace.WriteLine(tryCity.GetFullname());
+            //    }
+            //}
         }
 
         /// <summary>

@@ -39,7 +39,19 @@ namespace Stat.Places
                 //Members.Add(city);
                 AddMember(city);
             }
+            base.GetMembersAsync();
         }
+
+        public void AddMember(City city)
+        {
+            base.AddMemberAsync(city);
+            if (MembersAutoGetMembers)
+            {
+                city.MembersAutoGetMembers = true;
+                city.GetMembersAsync();
+            }
+        }
+
 
         //public override Task StoreSelfToDB(DbConnection dbConnection)
         //{

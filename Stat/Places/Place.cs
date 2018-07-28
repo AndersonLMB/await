@@ -10,6 +10,9 @@ namespace Stat.Places
 {
     public class Place
     {
+        private int requestTimes = 0;
+        public DateTime RequestDT { get; set; }
+        public DateTime ResponseDT { get; set; }
         private PlaceType placeType;
         //http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2017/
         private string url;
@@ -32,12 +35,24 @@ namespace Stat.Places
         /// </summary>
         public string Code { get => code; set => code = value; }
 
-        public bool AutoStoreMembersToDB = false;
+        /// <summary>
+        /// 是否自动存储成员到数据库
+        /// </summary>
+        public bool AutoStoreMembersToDB = true;
+
+        /// <summary>
+        /// 成员是否自动获取成员
+        /// </summary>
+        public bool MembersAutoGetMembers = false;
+
         public DbConnection Connection = PlacesConfig.SQLiteConnection;
         /// <summary>
         /// 地方类型
         /// </summary>
         public PlaceType PlaceType { get => placeType; set => placeType = value; }
+        private string cxType;
+        public string CxType { get => cxType; set => cxType = value; }
+        public int RequestTimes { get => requestTimes; set => requestTimes = value; }
 
         private Place father;
         private string name;
@@ -70,6 +85,16 @@ namespace Stat.Places
         /// <returns></returns>
         public async Task<string> GetPageContentAsync()
         {
+            if (RequestTimes == 0)
+            {
+                RequestDT = DateTime.Now;
+                UpdateRequestTimesToDBAsync(Connection);
+            }
+            else
+            {
+                ;
+            }
+            RequestTimes++;
             //Thread.Sleep(100);
             Thread.Sleep(PlacesConfig.Delay);
             WebClient webClient = new WebClient();
@@ -77,6 +102,8 @@ namespace Stat.Places
             {
                 //webClient.DownloadString(new Uri(Url));
                 var res = await webClient.DownloadStringTaskAsync(new Uri(Url));
+                ResponseDT = DateTime.Now;
+                UpdateResponseTimesToDBAsync(this.Connection);
                 return res;
             }
             catch (Exception ex)
@@ -85,23 +112,30 @@ namespace Stat.Places
                 return res;
                 //throw;
             }
-
-
         }
+
+
 
         /// <summary>
         /// 添加成员
         /// </summary>
         /// <param name="member"></param>
-        public void AddMember(Place member)
+        public async Task AddMemberAsync(Place member)
         {
             member.Father = this;
             Members.Add(member);
             if (AutoStoreMembersToDB)
             {
-                member.StoreSelfToDB(this.Connection);
+                await member.StoreSelfToDBAsync(this.Connection);
+
+                var result = Connection.Query("SELECT * FROM places;");
                 //StoreToDB(this.Connection);
             }
+            //if (MembersAutoGetMembers)
+            //{
+
+            //    member.GetMembersAsync();
+            //}
         }
 
         /// <summary>
@@ -115,10 +149,12 @@ namespace Stat.Places
 
         public Task GetMembersAsync()
         {
-            throw new NotImplementedException();
+            Console.WriteLine(GetFullname());
+            return null;
+            //throw new NotImplementedException();
         }
 
-        public Task StoreSelfToDB(DbConnection dbConnection)
+        public async Task StoreSelfToDBAsync(DbConnection dbConnection)
         {
             var param = new
             {
@@ -126,17 +162,44 @@ namespace Stat.Places
                 Name = Name,
                 Url = Url,
                 Parent = Father.Code,
-                PlaceType = PlaceType.ToString()
+                PlaceType = PlaceType.ToString(),
+                CxType = CxType,
             };
-            dbConnection.Execute(@"INSERT INTO places(code,name,url,parent,placetype) values(@Code, @Name,@Url,@Parent,@PlaceType);",
+            dbConnection.Execute(@"INSERT INTO places(code,name,url,parent,placetype,cxtype) values(@Code, @Name,@Url,@Parent,@PlaceType,@CxType);",
                 param);
             //if (this.PlaceType == PlaceType.Village)
             //{
             //    var result = dbConnection.Query("SELECT * FROM places;");
             //}
-            return null;
-            return null;
             //throw new NotImplementedException();
+        }
+        public async Task UpdateResponseTimesToDBAsync(DbConnection dbConnection)
+        {
+            var parem = new
+            {
+                //RequestDT = RequestDT,
+                ResponseDT = ResponseDT,
+                Code = Code
+            };
+            var sql = @"UPDATE places SET responsedt =@ResponseDT  WHERE code  = @Code;";
+
+            dbConnection.Execute(sql, parem);
+            //return null;
+
+        }
+        public async Task UpdateRequestTimesToDBAsync(DbConnection dbConnection)
+        {
+            var parem = new
+            {
+                RequestDT = RequestDT,
+                //ResponseDT = ResponseDT,
+                Code = Code
+            };
+            var sql = @"UPDATE places SET requestdt =@RequestDT  WHERE code  = @Code;";
+
+            dbConnection.Execute(sql, parem);
+            //return null;
+
         }
     }
 

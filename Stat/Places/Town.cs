@@ -36,8 +36,21 @@ namespace Stat.Places
                 }
             }
 
+            base.GetMembersAsync();
             //throw new NotImplementedException();
         }
+
+        public void AddMember(Village village)
+        {
+            base.AddMemberAsync(village);
+            if (MembersAutoGetMembers)
+            {
+                village.MembersAutoGetMembers = true;
+                village.GetMembersAsync();
+            }
+                
+        }
+
 
         public Task StoreToDB(DbConnection dbConnection)
         {

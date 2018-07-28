@@ -48,8 +48,20 @@ namespace Stat.Places
                     //Members.Add(town);
                 }
             }
+            base.GetMembersAsync();
             //string pageContent = await this.GetPageContentAsync();
             //throw new NotImplementedException();
+        }
+
+        public void AddMember(Town town)
+        {
+            base.AddMemberAsync(town);
+            if (MembersAutoGetMembers)
+            {
+                town.MembersAutoGetMembers = true;
+                town.GetMembersAsync();
+            }
+            ;
         }
 
         public Task StoreToDB(DbConnection dbConnection)

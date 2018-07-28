@@ -8,9 +8,12 @@ namespace Stat.Places
 {
     public class Nation : Place, IPlace
     {
+        //public List<Province> Members;
+
         public Nation()
         {
-            this.Members = new List<Place>();
+            //this.Members = new List<Province>();
+            Members = new List<Place>();
         }
 
         public void GetPage()
@@ -18,6 +21,10 @@ namespace Stat.Places
 
         }
 
+        /// <summary>
+        /// 异步获取成员
+        /// </summary>
+        /// <returns></returns>
         public async Task GetMembersAsync()
         {
             string pageContent = await GetPageContentAsync();
@@ -43,11 +50,24 @@ namespace Stat.Places
                     //Members.Add(newProvince);
                 }
             }
+            base.GetMembersAsync();
+        }
+
+        public void AddMember(Province province)
+        {
+            base.AddMemberAsync(province);
+            if (MembersAutoGetMembers)
+            {
+                province.MembersAutoGetMembers = true;
+                province.GetMembersAsync();
+            }
+            
+
         }
 
         //public override Task StoreSelfToDB(DbConnection dbConnection)
         //{
-            
+
 
         //    //return null;
         //    //throw new NotImplementedException();

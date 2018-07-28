@@ -46,8 +46,21 @@ namespace Stat.Places
                 AddMember(county);
                 //this.Members.Add(county);
             }
+            base.GetMembersAsync();
             //throw new NotImplementedException();
         }
+
+        public void AddMember(County county)
+        {
+            base.AddMemberAsync(county);
+            if (MembersAutoGetMembers)
+            {
+                county.MembersAutoGetMembers = true;
+                county.GetMembersAsync();
+            }
+
+        }
+
 
         public Task StoreToDB(DbConnection dbConnection)
         {
