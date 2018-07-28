@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading.Tasks;
 using CsQuery;
 
@@ -10,6 +11,7 @@ namespace Stat.Places
         public City()
         {
             Members = new List<Place>();
+            PlaceType = PlaceType.City;
         }
 
         public async Task GetMembersAsync()
@@ -45,6 +47,11 @@ namespace Stat.Places
                 //this.Members.Add(county);
             }
             //throw new NotImplementedException();
+        }
+
+        public Task StoreToDB(DbConnection dbConnection)
+        {
+            throw new NotImplementedException();
         }
     }
 

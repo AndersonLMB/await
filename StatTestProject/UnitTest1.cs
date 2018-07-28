@@ -74,6 +74,12 @@ namespace StatTestProject
             };
             await shenyang.GetMembersAsync();
         }
+
+        [TestMethod]
+        public void ReadFromDBFileTest()
+        {
+            Stat.Program.ReadFromDBFile();
+        }
     }
 
 

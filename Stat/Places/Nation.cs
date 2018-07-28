@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading.Tasks;
 using CsQuery;
 
@@ -38,15 +39,19 @@ namespace Stat.Places
                         //Father = this,
                         Code = String.Format("{0:D2}0000000000", aa.GetAttribute("href").Split('.')[0])
                     };
-
                     AddMember(newProvince);
                     //Members.Add(newProvince);
                 }
             }
         }
 
+        //public override Task StoreSelfToDB(DbConnection dbConnection)
+        //{
+            
 
-
+        //    //return null;
+        //    //throw new NotImplementedException();
+        //}
     }
 
 }

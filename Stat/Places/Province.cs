@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading.Tasks;
+using Dapper;
+using System.Data;
 using CsQuery;
 
 namespace Stat.Places
@@ -10,6 +13,7 @@ namespace Stat.Places
         public Province()
         {
             this.Members = new List<Place>();
+            this.PlaceType = PlaceType.Province;
         }
 
         public async Task GetMembersAsync()
@@ -36,6 +40,26 @@ namespace Stat.Places
                 AddMember(city);
             }
         }
+
+        //public override Task StoreSelfToDB(DbConnection dbConnection)
+        //{
+        //    var self = this;
+
+
+        //    var param = new
+        //    {
+        //        Code = Code,
+        //        Name = Name,
+        //        Url = Url,
+        //        Parent = Father.Code,
+        //        PlaceType = PlaceType.ToString()
+        //    };
+        //    dbConnection.Execute(@"INSERT INTO places(code,name,url,parent,placetype) values(@Code, @Name,@Url,@Parent,@PlaceType);",
+        //        param);
+        //    var result = dbConnection.Query("SELECT * FROM places;");
+        //    return null;
+        //    //throw new NotImplementedException();
+        //}
     }
 
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading.Tasks;
 using CsQuery;
 
@@ -9,7 +10,8 @@ namespace Stat.Places
     {
         public County()
         {
-            this.Members = new List<Place>();
+            Members = new List<Place>();
+            PlaceType = PlaceType.County;
         }
         public async Task GetMembersAsync()
         {
@@ -48,6 +50,11 @@ namespace Stat.Places
             }
             //string pageContent = await this.GetPageContentAsync();
             //throw new NotImplementedException();
+        }
+
+        public Task StoreToDB(DbConnection dbConnection)
+        {
+            throw new NotImplementedException();
         }
     }
 
